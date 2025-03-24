@@ -25,7 +25,7 @@ export default function ProjectDetail() {
     }
   }, [id]);
 
-  if (!project) return <div className="flex justify-center items-center h-screen text-white">Chargement...</div>;
+  if (!project) return <div className="flex justify-center items-center h-screen text-whiter">Chargement...</div>;
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 py-12 px-4">
@@ -34,7 +34,7 @@ export default function ProjectDetail() {
         <div className="mb-8">
           <button 
             onClick={() => router.back()} 
-            className="flex items-center text-gray-300 hover:text-blue-400 transition duration-200"
+            className="flex items-center text-gray-300 hover:text-blue-400 transition duration-200 cursor-pointer"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
@@ -47,12 +47,24 @@ export default function ProjectDetail() {
         <div className="mb-12">
           <h1 className="text-4xl font-bold text-white mb-4">{project.name}</h1>
           <div className="flex items-center space-x-4">
-            <span className="bg-gray-800 text-blue-400 text-sm px-3 py-1 rounded">
-              {project.category || "Non catégorisé"}
-            </span>
+            <div className="flex flex-wrap gap-2">
+                {Array.isArray(project.category) && project.category.length > 0 ? (
+                project.category.map((cat: string, index: number) => (
+                    <span 
+                    key={index} 
+                    className="bg-gray-800 text-blue-400 text-sm px-3 py-1 rounded"
+                    >
+                    {cat}
+                    </span>
+                ))
+                ) : (
+                <span className="bg-gray-800 text-blue-400 text-sm px-3 py-1 rounded">
+                    {project.category || "Non catégorisé"}
+                </span>
+                )}
+            </div>
             <div className="flex items-center text-gray-400">
-              <span className="mr-2">{project.liked_by?.length || 0} likes</span>
-              <LikeButton projectId={project.id} likes={project.liked_by?.length} />
+                <LikeButton projectId={project.id} likes={project.likes} />
             </div>
           </div>
         </div>
@@ -85,8 +97,21 @@ export default function ProjectDetail() {
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-gray-400 mb-1">Technologies</h3>
-                  <p className="text-gray-200">{project.technos || "Non spécifié"}</p>
+                    <h3 className="text-gray-400 mb-1">Technologies</h3>
+                    <div className="flex flex-wrap gap-2">
+                        {Array.isArray(project.technologies) && project.technologies.length > 0 ? (
+                        project.technologies.map((tech: string, index: number) => (
+                            <span 
+                            key={index} 
+                            className="bg-gray-700 text-blue-400 text-xs px-2 py-1 rounded"
+                            >
+                            {tech}
+                            </span>
+                        ))
+                        ) : (
+                        <p className="text-gray-200">{project.technologies || "Non spécifié"}</p>
+                        )}
+                    </div>
                 </div>
                 
                 <div>
